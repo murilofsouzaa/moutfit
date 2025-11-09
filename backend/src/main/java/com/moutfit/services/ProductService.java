@@ -1,60 +1,76 @@
 package com.moutfit.services;
 
+import com.moutfit.dto.product.ProductRequestDTO;
+import com.moutfit.dto.product.ProductResponseDTO;
+import com.moutfit.dto.product.ProductUpdate;
 import com.moutfit.models.Product;
-import com.moutfit.models.User;
 import com.moutfit.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductService {
 
-    ProductRepository productRepository;
-    Product product;
-    User user;
-    List<Product> listProducts;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public List<Product> findAll() {
-        return productRepository.findAll();
+    public List<ProductResponseDTO> findAll() {
+         return productRepository.findAll()
+                .stream().map(product ->
+                        new ProductResponseDTO(
+                                product.getId(),
+                                product.getName(),
+                                product.getDescription(),
+                                product.getPrice()
+                        )).toList();
     }
 
-    public Product findByProductByName(String name){
-        return productRepository.findProductByName(name).orElse(null);
+    public ProductResponseDTO findByName(String name){
+        Product product = productRepository.findProductByName(name)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        return new ProductResponseDTO(
+                product.getId() ,product.getName(), product.getDescription(), product.getPrice());
     }
 
-    public Product addProduct(Product product) {
-        return productRepository.save(product);
+    public ProductResponseDTO addProduct(ProductRequestDTO productRequestDTO) {
+        Product product = new Product();
+        product.setName(productRequestDTO.name());
+        product.setPrice(productRequestDTO.price());
+        product.setDescription(productRequestDTO.description());
+
+        Product saved = productRepository.save(product);
+
+        return new ProductResponseDTO(
+                saved.getId(),
+                saved.getName(),
+                saved.getDescription(),
+                saved.getPrice()
+        );
     }
 
-    public void removeProduct(Long productId) {
+    public ProductResponseDTO updateProduct(ProductUpdate productUpdateDTO) {
+        Product product = productRepository.findById(productUpdateDTO.id())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setName(productUpdateDTO.name());
+        product.setPrice(productUpdateDTO.price());
+        product.setDescription(productUpdateDTO.description());
+
+        Product updated = productRepository.save(product);
+
+        return new ProductResponseDTO(
+                updated.getId(), updated.getName(), updated.getDescription() ,updated.getPrice());
+    }
+
+    public void removeProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
         productRepository.delete(product);
     }
-
-    public Product updateName(Long productID, String name) {
-        productRepository.findById(productID);
-        product.setName(name);
-
-        return productRepository.save(product);
-    }
-
-    public Product updatePrice(Long productID, BigDecimal newPrice) {
-        if(!"admin".equals(user.getRole())){
-            throw new SecurityException("You are not allowed to change the price of this product.");
-        }
-
-        Product product = productRepository.findById(productID).orElseThrow(null);
-        product.setPrice(newPrice);
-        return productRepository.save(product);
-    }
-
-
-
-
 }
