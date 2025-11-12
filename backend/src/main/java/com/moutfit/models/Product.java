@@ -10,7 +10,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String name;
     private BigDecimal price;
@@ -22,7 +22,7 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, String name, BigDecimal price, String description,
+    public Product(Integer id, String name, BigDecimal price, String description,
                    int quantity, String image, String category, boolean status) {
         this.id = id;
         this.name = name;
@@ -34,11 +34,11 @@ public class Product {
         this.status = status;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -18,6 +18,27 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    public ProductResponseDTO updateProduct(ProductUpdate productUpdateDTO) {
+        Product product = productRepository.findById(productUpdateDTO.id())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        product.setName(productUpdateDTO.name());
+        product.setPrice(productUpdateDTO.price());
+        product.setDescription(productUpdateDTO.description());
+
+        Product updated = productRepository.save(product);
+
+        return new ProductResponseDTO(
+                updated.getId(), updated.getName(), updated.getDescription() ,updated.getPrice());
+    }
+
+    public void remove(Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        productRepository.delete(product);
+    }
+
     public List<ProductResponseDTO> findAll() {
          return productRepository.findAll()
                 .stream().map(product ->
@@ -37,7 +58,7 @@ public class ProductService {
                 product.getId() ,product.getName(), product.getDescription(), product.getPrice());
     }
 
-    public ProductResponseDTO addProduct(ProductRequestDTO productRequestDTO) {
+    public ProductResponseDTO add(ProductRequestDTO productRequestDTO) {
         Product product = new Product();
         product.setName(productRequestDTO.name());
         product.setPrice(productRequestDTO.price());
@@ -51,26 +72,5 @@ public class ProductService {
                 saved.getDescription(),
                 saved.getPrice()
         );
-    }
-
-    public ProductResponseDTO updateProduct(ProductUpdate productUpdateDTO) {
-        Product product = productRepository.findById(productUpdateDTO.id())
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        product.setName(productUpdateDTO.name());
-        product.setPrice(productUpdateDTO.price());
-        product.setDescription(productUpdateDTO.description());
-
-        Product updated = productRepository.save(product);
-
-        return new ProductResponseDTO(
-                updated.getId(), updated.getName(), updated.getDescription() ,updated.getPrice());
-    }
-
-    public void removeProduct(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        productRepository.delete(product);
     }
 }

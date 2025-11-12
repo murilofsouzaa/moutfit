@@ -21,13 +21,42 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void createUser(UserRequestDTO userRequestDTO) {
+    public UserResponseDTO getUser(Integer id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+        );
+    }
+
+    public void create(UserRequestDTO userRequestDTO) {
         User user = new User();
         user.setName(userRequestDTO.name());
         user.setEmail(userRequestDTO.email());
         user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
 
         userRepository.save(user);
+    }
+
+    public UserResponseDTO update(Integer id, UserRequestDTO userRequestDTO) {
+
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
+
+        user.setName(userRequestDTO.name());
+        user.setEmail(userRequestDTO.email());
+        user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
+
+        userRepository.save(user);
+
+        return new UserResponseDTO(user.getId() ,user.getName(), user.getEmail());
+
+    }
+
+    public void delete(Integer id) {
+        userRepository.deleteById(id);
     }
 
 
