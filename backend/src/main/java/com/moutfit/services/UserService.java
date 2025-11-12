@@ -4,6 +4,7 @@ import com.moutfit.dto.user.UserRequestDTO;
 import com.moutfit.dto.user.UserResponseDTO;
 import com.moutfit.models.User;
 import com.moutfit.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,13 +33,19 @@ public class UserService {
         );
     }
 
-    public void create(UserRequestDTO userRequestDTO) {
+    public UserResponseDTO create(UserRequestDTO userRequestDTO) {
         User user = new User();
         user.setName(userRequestDTO.name());
         user.setEmail(userRequestDTO.email());
         user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
 
         userRepository.save(user);
+
+        return new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail()
+        );
     }
 
     public UserResponseDTO update(Integer id, UserRequestDTO userRequestDTO) {
