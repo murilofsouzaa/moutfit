@@ -44,11 +44,19 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDTO create(UserRequestDTO userRequestDTO) {
+    public UserResponseDTO create(UserRequestDTO dto) {
         User user = new User();
-        user.setName(userRequestDTO.name());
-        user.setEmail(userRequestDTO.email());
-        user.setPassword(passwordEncoder.encode(userRequestDTO.password()));
+
+        user.setName(dto.name());
+        user.setEmail(dto.email());
+        user.setPassword(passwordEncoder.encode(dto.password()));
+        user.setAddress(dto.address());
+        user.setPhone(dto.phone());
+        user.setCity(dto.city());
+        user.setState(dto.state());
+        user.setZip(dto.zip());
+        user.setCountry(dto.country());
+        user.setRole(dto.role());
 
         userRepository.save(user);
 
@@ -58,6 +66,7 @@ public class UserService {
                 user.getEmail()
         );
     }
+
 
     public UserResponseDTO update(Integer id, UserUpdateDTO userUpdateDTO) {
 
