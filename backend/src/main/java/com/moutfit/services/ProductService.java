@@ -104,7 +104,7 @@ public class ProductService {
     }
 
 
-    public void remove(Integer id) {
+    public void delete(Integer id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 

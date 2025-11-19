@@ -35,6 +35,15 @@ public class UserService {
         );
     }
 
+    public List<UserResponseDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(u -> new UserResponseDTO(
+                        u.getId(),
+                        u.getName(),
+                        u.getEmail()))
+                .toList();
+    }
+
     public UserResponseDTO create(UserRequestDTO userRequestDTO) {
         User user = new User();
         user.setName(userRequestDTO.name());
@@ -50,12 +59,21 @@ public class UserService {
         );
     }
 
-    public UserResponseDTO update(Integer id, UserUpdateDTO userUpdateDTO, UserChangePasswordDTO userChangePasswordDTO) {
+    public UserResponseDTO update(Integer id, UserUpdateDTO userUpdateDTO) {
 
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
 
         user.setName(userUpdateDTO.name());
         user.setEmail(userUpdateDTO.email());
+
+        userRepository.save(user);
+        return new UserResponseDTO(user.getId() ,user.getName(), user.getEmail());
+
+    }
+
+    public void updatePassword(Integer id, UserChangePasswordDTO userChangePasswordDTO){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
 
         if (userChangePasswordDTO != null &&
                 userChangePasswordDTO.oldPassword() != null &&
@@ -67,10 +85,6 @@ public class UserService {
 
             user.setPassword(passwordEncoder.encode(userChangePasswordDTO.newPassword()));
         }
-
-        userRepository.save(user);
-        return new UserResponseDTO(user.getId() ,user.getName(), user.getEmail());
-
     }
 
     public void delete(Integer id) {

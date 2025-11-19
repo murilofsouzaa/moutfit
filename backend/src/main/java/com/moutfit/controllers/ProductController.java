@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     ProductService productService;
-    ProductRepository productRepository;
 
-    public ProductController(ProductService productService, ProductRepository productRepository) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.productRepository = productRepository;
     }
 
     @GetMapping("/{id}")
@@ -39,7 +37,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Integer id){
-        productRepository.deleteById(id);
+        productService.delete(id);
         return ResponseEntity.ok("Product deleted successfully");
     }
 
