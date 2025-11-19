@@ -2,11 +2,10 @@ package com.moutfit.controllers;
 
 import com.moutfit.dto.product.ProductRequestDTO;
 import com.moutfit.dto.product.ProductResponseDTO;
-import com.moutfit.models.Product;
+import com.moutfit.dto.product.ProductUpdateDTO;
 import com.moutfit.repository.ProductRepository;
 import com.moutfit.services.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,24 +21,26 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductResponseDTO getProductById(@PathVariable Integer id){
-        return productService.getProductById(id);
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Integer id){
+        return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO productRequestDTO){
-        ProductResponseDTO productResponseDTO = productService.add(productRequestDTO);
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductUpdateDTO productUpdateDTO){
+        ProductResponseDTO productResponseDTO = productService.add(productUpdateDTO);
         return ResponseEntity.ok(productResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public void updateProduct(@PathVariable Integer id){
-        productService.updateById(id);
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductUpdateDTO productUpdateDTO){
+        productService.updateById(id, productUpdateDTO);
+        return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Integer id){
+    public ResponseEntity<String> deleteProduct(@PathVariable Integer id){
         productRepository.deleteById(id);
+        return ResponseEntity.ok("Product deleted successfully");
     }
 
 }

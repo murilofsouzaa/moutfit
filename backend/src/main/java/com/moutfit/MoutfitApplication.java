@@ -1,5 +1,7 @@
 package com.moutfit;
 
+import com.moutfit.models.User;
+import com.moutfit.services.UserService;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

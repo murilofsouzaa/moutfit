@@ -2,7 +2,7 @@ package com.moutfit.services;
 
 import com.moutfit.dto.product.ProductRequestDTO;
 import com.moutfit.dto.product.ProductResponseDTO;
-import com.moutfit.dto.product.ProductUpdate;
+import com.moutfit.dto.product.ProductUpdateDTO;
 import com.moutfit.models.Product;
 import com.moutfit.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class ProductService {
     }
 
 
-    public ProductResponseDTO add(ProductRequestDTO productRequestDTO) {
+    public ProductResponseDTO add(ProductUpdateDTO productRequestDTO) {
         Product product = new Product();
         product.setName(productRequestDTO.name());
         product.setDescription(productRequestDTO.description());
@@ -57,12 +57,15 @@ public class ProductService {
         );
     }
 
-    public ProductResponseDTO updateById(Integer id) {
+    public ProductResponseDTO updateById(Integer id, ProductUpdateDTO productUpdateDTO) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        product.setName(product.getName());
-
+        product.setName(productUpdateDTO.name());
+        product.setDescription(productUpdateDTO.description());
+        product.setPrice(productUpdateDTO.price());
+        product.setCategory(productUpdateDTO.category());
+        product.setImageURL(productUpdateDTO.image());
 
         productRepository.save(product);
 
@@ -108,7 +111,7 @@ public class ProductService {
         productRepository.delete(product);
     }
 
-    public ProductResponseDTO findByName(String name){
+    public ProductResponseDTO getByName(String name){
         Product product = productRepository.findProductByName(name)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -124,7 +127,7 @@ public class ProductService {
         );
     }
 
-    public List<ProductResponseDTO> findAll() {
+    public List<ProductResponseDTO> getAll() {
          return productRepository.findAll()
                 .stream().map(product ->
                         new ProductResponseDTO(

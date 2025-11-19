@@ -1,4 +1,4 @@
 package com.moutfit.dto.user;
 
-public record UserUpdateDTO (String name, String email, String password) {
+public record UserUpdateDTO (String name, String email) {
 }
