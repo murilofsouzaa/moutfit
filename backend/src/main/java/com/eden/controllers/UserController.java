@@ -6,11 +6,14 @@ import com.eden.dto.user.UserResponseDTO;
 import com.eden.dto.user.UserUpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 import com.eden.services.UserService;
 
 import java.util.List;
 
+@EnableMethodSecurity
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -26,6 +29,8 @@ public class UserController {
         return userService.getUser(id);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
@@ -43,6 +48,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Integer id) {
         userService.delete(id);
