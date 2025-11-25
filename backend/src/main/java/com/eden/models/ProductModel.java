@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 @Table(name = "products")
 public class ProductModel {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -32,6 +34,12 @@ public class ProductModel {
 
     @Column(name="status", nullable = false, length = 15)
     private boolean status;
+
+    @Column(name = "size", nullable = false, length = 1)
+    private char size;
+
+    @Column(name = "quantity_sold", nullable = false)
+    private int quantity_sold;
 
     public ProductModel() {}
 
@@ -78,6 +86,7 @@ public class ProductModel {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public int getQuantity() {
         return quantity;
     }
@@ -90,8 +99,8 @@ public class ProductModel {
         return imageURL;
     }
 
-    public void setImageURL(String image) {
-        this.imageURL = image;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public String getCategory() {
@@ -109,4 +118,21 @@ public class ProductModel {
     public void setStatus(boolean status) {
         this.status = status;
     }
+
+    public char getSize() {
+        return size;
+    }
+
+    public void setSize(char size) {
+        this.size = size;
+    }
+
+    public int getQuantity_sold() {
+        return quantity_sold;
+    }
+
+    public void setQuantity_sold(int quantity_sold) {
+        this.quantity_sold = quantity_sold;
+    }
+
 }
