@@ -35,10 +35,10 @@ public class ProductModel {
     @Column(name="status", nullable = false, length = 15)
     private boolean status;
 
-    @Column(name = "size", nullable = false, length = 1)
+    @Column(name = "size", nullable = true, length = 1)
     private char size;
 
-    @Column(name = "quantity_sold", nullable = false)
+    @Column(name = "quantity_sold", nullable = true)
     private int quantity_sold;
 
     public ProductModel() {}
