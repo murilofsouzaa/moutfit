@@ -1,6 +1,7 @@
 package com.eden.services;
 
 import com.eden.dto.shoppingCart.AddProductToCartDTO;
+import com.eden.dto.shoppingCart.ShoppingCartDeleteDTO;
 import com.eden.dto.shoppingCart.ShoppingCartRequestDTO;
 import com.eden.dto.shoppingCart.ShoppingCartResponseDTO;
 import com.eden.models.ProductModel;
@@ -67,6 +68,21 @@ public class ShoppingCartService {
                 shoppingCart.getProdQuantity(),
                 shoppingCart.getPrice(),
                 shoppingCart.getCoupon()
+        );
+    }
+
+    public ShoppingCartDeleteDTO removeProductFromShoppingCart(Integer cartId, Integer prodId) {
+        ShoppingCartModel shoppingCartModel = shoppingCartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("ShoppingCart not found"));
+
+        ProductModel product = productRepository.findById(prodId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        shoppingCartModel.getProducts().remove(product);
+
+        return new ShoppingCartDeleteDTO(
+                shoppingCartModel.getId(),
+                product.getId()
         );
     }
 }

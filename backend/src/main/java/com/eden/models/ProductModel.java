@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 @Table(name = "products")
 public class ProductModel {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

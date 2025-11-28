@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Table(name = "shoppingCart")
 public class ShoppingCartModel {
     @Id

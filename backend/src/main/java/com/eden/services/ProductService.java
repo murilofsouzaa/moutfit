@@ -1,5 +1,6 @@
 package com.eden.services;
 
+import com.eden.dto.product.ProductDeleteDTO;
 import com.eden.dto.product.ProductRequestDTO;
 import com.eden.dto.product.ProductResponseDTO;
 import com.eden.dto.product.ProductUpdateDTO;
@@ -134,14 +135,14 @@ public class ProductService implements IProductDiscountCalculator {
         );
     }
 
-
-    public void delete(Integer id) {
+    public ProductDeleteDTO delete(Integer id) {
         ProductModel productModel = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         productRepository.delete(productModel);
-    }
 
+        return new ProductDeleteDTO(productModel.getId());
+    }
 
     @Override
     public BigDecimal calculateProductDiscount(ProductModel product, double discountRate) {

@@ -1,9 +1,6 @@
 package com.eden.services;
 
-import com.eden.dto.user.UserChangePasswordDTO;
-import com.eden.dto.user.UserRequestDTO;
-import com.eden.dto.user.UserResponseDTO;
-import com.eden.dto.user.UserUpdateDTO;
+import com.eden.dto.user.*;
 import com.eden.models.UserModel;
 import com.eden.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -93,8 +90,12 @@ public class UserService {
         }
     }
 
-    public void delete(Integer id) {
-        userRepository.deleteById(id);
+    public UserDeleteDTO delete(Integer id) {
+
+        UserModel user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+
+        return new UserDeleteDTO(user.getId());
     }
 
 
