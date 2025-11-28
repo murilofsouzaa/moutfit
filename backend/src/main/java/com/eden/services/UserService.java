@@ -39,7 +39,7 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDTO create(UserRequestDTO dto) {
+    public UserPostDTO create(UserRequestDTO dto) {
         UserModel user = new UserModel();
 
         user.setName(dto.name());
@@ -55,10 +55,10 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserResponseDTO(
-                user.getId(),
+        return new UserPostDTO(
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getRole()
         );
     }
 

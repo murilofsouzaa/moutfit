@@ -1,9 +1,6 @@
 package com.eden.services;
 
-import com.eden.dto.product.ProductDeleteDTO;
-import com.eden.dto.product.ProductRequestDTO;
-import com.eden.dto.product.ProductResponseDTO;
-import com.eden.dto.product.ProductUpdateDTO;
+import com.eden.dto.product.*;
 import com.eden.models.ProductModel;
 import com.eden.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -67,7 +64,7 @@ public class ProductService implements IProductDiscountCalculator {
                         )).toList();
     }
 
-    public ProductResponseDTO add(ProductUpdateDTO productRequestDTO) {
+    public ProductPostDTO add(ProductUpdateDTO productRequestDTO) {
         ProductModel productModel = new ProductModel();
         productModel.setName(productRequestDTO.name());
         productModel.setDescription(productRequestDTO.description());
@@ -77,15 +74,11 @@ public class ProductService implements IProductDiscountCalculator {
 
         productRepository.save(productModel);
 
-        return new ProductResponseDTO(
-                productModel.getId(),
+        return new ProductPostDTO(
                 productModel.getName(),
                 productModel.getDescription(),
                 productModel.getPrice(),
-                productModel.getCategory(),
-                productModel.getImageURL(),
-                productModel.getQuantity(),
-                productModel.getStatus()
+                productModel.getQuantity()
         );
     }
 
