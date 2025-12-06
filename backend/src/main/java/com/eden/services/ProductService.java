@@ -64,7 +64,7 @@ public class ProductService implements IProductDiscountCalculator {
                         )).toList();
     }
 
-    public ProductPostDTO add(ProductUpdateDTO productRequestDTO) {
+    public CreateProductRequest add(ProductUpdateDTO productRequestDTO) {
         ProductModel productModel = new ProductModel();
         productModel.setName(productRequestDTO.name());
         productModel.setDescription(productRequestDTO.description());
@@ -74,7 +74,7 @@ public class ProductService implements IProductDiscountCalculator {
 
         productRepository.save(productModel);
 
-        return new ProductPostDTO(
+        return new CreateProductRequest(
                 productModel.getName(),
                 productModel.getDescription(),
                 productModel.getPrice(),
@@ -126,13 +126,13 @@ public class ProductService implements IProductDiscountCalculator {
         );
     }
 
-    public ProductDeleteDTO delete(Integer id) {
+    public DeleteProductRequest delete(Integer id) {
         ProductModel productModel = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         productRepository.delete(productModel);
 
-        return new ProductDeleteDTO(productModel.getId());
+        return new DeleteProductRequest(productModel.getId());
     }
 
     @Override
