@@ -1,7 +1,8 @@
 package com.eden.controllers;
 
-import com.eden.dto.product.ProductResponseDTO;
-import com.eden.dto.product.ProductUpdateDTO;
+import com.eden.dto.product.CreateProductRequest;
+import com.eden.dto.product.ProductResponse;
+import com.eden.dto.product.UpdateProductRequest;
 import com.eden.services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,19 +21,18 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable Integer id){
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Integer id){
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductUpdateDTO productUpdateDTO){
-        ProductResponseDTO productResponseDTO = productService.add(productUpdateDTO);
-        return ResponseEntity.ok(productResponseDTO);
+    public ResponseEntity<CreateProductRequest> createProduct(@RequestBody CreateProductRequest createProductRequest){
+        return ResponseEntity.ok(productService.add(createProductRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Integer id, @RequestBody ProductUpdateDTO productUpdateDTO){
-        productService.updateById(id, productUpdateDTO);
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Integer id, @RequestBody UpdateProductRequest updateProductRequest){
+        productService.updateById(id, updateProductRequest);
         return ResponseEntity.ok(productService.getProductById(id));
     }
 

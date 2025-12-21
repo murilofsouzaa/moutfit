@@ -1,7 +1,9 @@
-FROM openjdk:26-ea-trixie
+FROM openjdk:21-jdk-slim
 
-COPY target/Eden.jar /tmp/
+WORKDIR /app
+
+COPY target/Eden.jar Eden.jar
 
 EXPOSE 9090
 
-CMD java -jar /tmp/Eden.jar
+CMD["java", "-jar", "Eden.jar"]

@@ -1,13 +1,2 @@
-version: '3.8'
 services:
-  eden-backend:
-    image: eden:1.0
-    environment:
-      - APP_NAME=${APP_NAME}
-      - DB_URL=${DB_URL_DOCKER}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-    ports:
-      - "9090:8080"
-    restart: always
-    container_name: eden-backend
+  image: eden
